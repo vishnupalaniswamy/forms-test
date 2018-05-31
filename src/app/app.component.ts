@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 import { Customer } from './customer.interface';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     selector: 'my-app',
     templateUrl: 'app.component.html',
 })
-export class AppComponent implements OnInit, OnChanges {
+export class AppComponent implements OnInit {
     public myForm: FormGroup;
 
     constructor(private _fb: FormBuilder) { }
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, OnChanges {
             name: 'John'
         });
 
-        this.myForm.controls.name.setValue('Joe');
+        this.myForm.controls['name'].setValue('Joe');
     }
 
     onChanges(): void {
@@ -58,7 +58,7 @@ export class AppComponent implements OnInit, OnChanges {
         control.removeAt(i);
     }
 
-    save(model: Customer) {
+    save(model) {
         // call API to save
         // ...
         console.log(model);
@@ -67,7 +67,7 @@ export class AppComponent implements OnInit, OnChanges {
 
 class FormValidators {
 
-    static validateAll(control: AbstractControl): ValidationErrors | null {
+    static validateAll(control): ValidationErrors | null {
         console.log('validateAll ' + control.value);
         return null;
     }
