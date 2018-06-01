@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 import { Customer } from './customer.interface';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
     selector: 'my-app',
     templateUrl: 'app.component.html',
+    encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
     public myForm: FormGroup;
@@ -18,16 +19,17 @@ export class AppComponent implements OnInit {
             name: ['harry', [Validators.required, Validators.minLength(5), FormValidators.validateAll]],
             addresses: this._fb.array([
                 this.initAddress(),
+                this.initAddress(),
             ])
         });
         console.log('created form groups');
         this.onChanges();
 
         this.myForm.patchValue({
-            name: 'John'
+            name: 'Johnny'
         });
 
-        this.myForm.controls['name'].setValue('Joe');
+        this.myForm.controls['name'].setValue('Johnson');
     }
 
     onChanges(): void {
@@ -56,6 +58,19 @@ export class AppComponent implements OnInit {
     removeAddress(i: number) {
         const control = <FormArray>this.myForm.controls['addresses'];
         control.removeAt(i);
+    }
+
+    changeAddress() {
+        this.myForm.setValue({
+            name: 'holahola',
+            addresses: [{
+                street: '1', postcode: '1'
+            },
+            {
+                street: '3', postcode: '33'
+            },
+        ]
+        });
     }
 
     save(model) {
